@@ -1,118 +1,145 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import { StyleSheet, Text, View } from 'react-native'
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Landing from './src/screens/Landing/Landing';
+import Login from './src/screens/Login/Login';
+import SignUp from './src/screens/SignUp/SignUp';
+import ResetPassword from './src/screens/ResetPassword/ResetPassword';
+import Home from './src/screens/Home/Home';
+import { Menu, Navigation, Sidebar } from './src/components';
+import Products from './src/screens/Products/Products';
+import Inventory from './src/screens/Inventory/Inventory';
+import Customers from './src/screens/Customers/Customers';
+import Orders from './src/screens/Orders/Orders';
+import Goals from './src/screens/Goals/Goals';
+import Amazon from './src/screens/Amazon/Amazon';
+import Reports from './src/screens/Reports/Reports';
+import Settings from './src/screens/Settings/Settings';
+import BottomTab from './src/components/BottomTab/BottomTab';
+import MyAccount from './src/screens/MyAccount/MyAccount';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const DrawerNav = () => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+    <Drawer.Navigator
+      screenOptions={{
+        header: (props) => <Navigation {...props} />,
+      }}
+      drawerContent={(props) => <Sidebar {...props} />}
+    >
+      <Drawer.Screen name="Dashboard" component={BottomTab} />
+      <Drawer.Screen name="Products" component={BottomTab} />
+      <Drawer.Screen name="Inventory" component={BottomTab} />
+      <Drawer.Screen name="Customers" component={Customers} />
+      <Drawer.Screen name="Orders" component={BottomTab} />
+      <Drawer.Screen name="Goals" component={Goals} />
+      <Drawer.Screen name="Amazon" component={Amazon} />
+      <Drawer.Screen name="Reports" component={BottomTab} />
+      <Drawer.Screen name="Settings" component={Settings} />
+      <Drawer.Screen name="Profile" component={MyAccount} />
+    </Drawer.Navigator>
+  )
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const BottomTabs = () => {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <Tab.Navigator
+      tabBar={(props) => <Text>Bottom</Text>}
+    >
+      <Tab.Screen name="Dashboard" component={Home} />
+      <Tab.Screen name="Products" component={Products} />
+      <Tab.Screen name="Inventory" component={Inventory} />
+      <Tab.Screen name="Customers" component={Customers} />
+      <Tab.Screen name="Orders" component={Orders} />
+      <Tab.Screen name="Goals" component={Goals} />
+      <Tab.Screen name="Amazon" component={Amazon} />
+      <Tab.Screen name="Reports" component={Reports} />
+      <Tab.Screen name="Settings" component={Settings} />
+    </Tab.Navigator>
+  )
+}
+
+function MyTabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: '#e91e63',
+      }}
+    >
+      <Tab.Screen
+        name="Dashboard"
+        component={Home}
+        options={{
+          tabBarLabel: 'Home',
+          // tabBarIcon: ({ color, size }) => (
+          //   <MaterialCommunityIcons name="home" color={color} size={size} />
+          // ),
+        }}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <Tab.Screen
+        name="Products"
+        component={Products}
+        options={{
+          tabBarLabel: 'Updates',
+          // tabBarIcon: ({ color, size }) => (
+          //   <MaterialCommunityIcons name="bell" color={color} size={size} />
+          // ),
+        }}
+      />
+      <Tab.Screen
+        name="Inventory"
+        component={Inventory}
+        options={{
+          tabBarLabel: 'Profile',
+          // tabBarIcon: ({ color, size }) => (
+          //   <MaterialCommunityIcons name="account" color={color} size={size} />
+          // ),
+        }}
+      />
+    </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
-export default App;
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Sidebar"
+        // screenOptions={{
+        //   header: (props) => <Navigation {...props} />,
+        // }}
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="Landing" component={Landing} options={{ headerShown: false }} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+        <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Home" component={Home}
+          //options={{ headerTitleAlign: 'center',  headerTintColor: '#fff', headerStyle: { backgroundColor: '#020024' } }} 
+          //options={{ headerShown: false }}
+        /> */}
+        <Stack.Screen
+          name="Sidebar"
+          component={DrawerNav}
+          options={{ headerShown: false }}
+        />
+        {/* <BottomTabs /> */}
+        {/* <Stack.Screen
+          name="BottomBar"
+          component={MyTabs}
+        //options={{ headerShown: false }}
+        /> */}
+      </Stack.Navigator>
+
+    </NavigationContainer>
+  )
+}
+
+export default App
