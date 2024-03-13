@@ -11,14 +11,15 @@ import LoginStyle from './LoginStyle';
 import LandingStyle from '../Landing/LandingStyle';
 //import Icon from 'react-native-vector-icons/FontAwesome';
 import CheckBox from 'react-native-check-box';
-import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {authorize} from '../../redux/slice/AuthenticSlice';
 // import { Icon } from 'react-native-elements';
 
-const Login = () => {
-  const navigation = useNavigation();
+const Login = ({navigation}: any) => {
   const [state, setState] = useState({email: '', password: ''});
   const [errorMsg, setErrorMsg] = useState({email: '', password: ''});
   const [rememberMe, setRememberMe] = useState(false);
+  const dispatch = useDispatch();
 
   const handleLogin = () => {
     if (state.email !== 'dip@test.com' && state.password !== 'test1234') {
@@ -32,7 +33,8 @@ const Login = () => {
       setErrorMsg({email: '', password: 'Please enter valid password'});
     } else {
       setErrorMsg({email: '', password: ''});
-      navigation.navigate('Sidebar');
+      dispatch(authorize(state));
+      // navigation.navigate('DrawerNav');
     }
   };
   console.log(errorMsg, 'errorMsg');

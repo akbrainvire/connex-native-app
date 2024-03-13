@@ -1,23 +1,23 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import NavigationStyle from './NavigationStyle';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconFontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import CustomHeaderStyle from './CustomHeaderStyle';
 
-const Navigation = (props: any) => {
+const CustomHeader = (props: any) => {
   return (
-    <View style={NavigationStyle.navigationMain}>
-      <View style={NavigationStyle.navigationLeft}>
+    <View style={CustomHeaderStyle.navigationMain}>
+      <View style={CustomHeaderStyle.navigationLeft}>
         <IconEntypo
           name="menu"
           size={20}
           color="#fff"
           onPress={() => props.navigation.openDrawer()}
         />
-        <Text style={NavigationStyle.title}>{props?.route?.name}</Text>
+        <Text style={CustomHeaderStyle.title}>{props?.route?.name}</Text>
       </View>
-      <View style={NavigationStyle.navigationRight}>
+      <View style={CustomHeaderStyle.navigationRight}>
         <IconMaterialIcons name="notifications" size={20} color="#fff" />
         {/* <IconFontAwesome5 name="user-circle" size={20} color="#fff" /> */}
         <Image
@@ -29,4 +29,4 @@ const Navigation = (props: any) => {
   );
 };
 
-export default Navigation;
+export default CustomHeader;

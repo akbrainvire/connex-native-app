@@ -32,34 +32,6 @@ export const CustomTabBar = ({
           if (!isFocused && !event.defaultPrevented) {
             navigation.navigate(route.name);
           }
-
-          if (route.name === 'Dashboard') {
-            navigation.navigate('Sidebar', {
-              screen: 'Dashboard',
-              params: {screen: 'Dashboard'},
-            });
-          } else if (route.name === 'Products') {
-            console.log('enter products');
-            navigation.navigate('Sidebar', {
-              screen: 'Products',
-              params: {screen: 'Products'},
-            });
-          } else if (route.name === 'Inventory') {
-            navigation.navigate('Sidebar', {
-              screen: 'Inventory',
-              params: {screen: 'Inventory'},
-            });
-          } else if (route.name === 'Orders') {
-            navigation.navigate('Sidebar', {
-              screen: 'Orders',
-              params: {screen: 'Orders'},
-            });
-          } else if (route.name === 'Reports') {
-            navigation.navigate('Sidebar', {
-              screen: 'Reports',
-              params: {screen: 'Reports'},
-            });
-          }
         };
 
         return (

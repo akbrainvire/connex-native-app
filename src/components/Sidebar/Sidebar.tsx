@@ -6,54 +6,19 @@ import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import LandingStyle from '../../screens/Landing/LandingStyle';
 import SidebarStyle from './SidebarStyle';
+import {useDispatch} from 'react-redux';
+import {logout} from '../../redux/slice/AuthenticSlice';
 
 const Sidebar = ({state, navigation, ...props}: any) => {
-  //   console.log(state.routeNames[state.index]);
-
+  const dispatch = useDispatch();
   const handleLogOut = () => {
-    navigation.navigate('Landing');
+    dispatch(logout());
   };
 
   const handlePress = (route: any) => {
-    console.log('route', route);
     if (route.name === 'Dashboard') {
-      navigation.navigate('Sidebar', {
+      navigation.navigate('Dashboard', {
         screen: 'Dashboard',
-        params: {
-          screen: 'Dashboard',
-        },
-      });
-    }
-    if (route.name === 'Products') {
-      navigation.navigate('Sidebar', {
-        screen: 'Products',
-        params: {
-          screen: 'Products',
-        },
-      });
-    }
-    if (route.name === 'Inventory') {
-      navigation.navigate('Sidebar', {
-        screen: 'Inventory',
-        params: {
-          screen: 'Inventory',
-        },
-      });
-    }
-    if (route.name === 'Orders') {
-      navigation.navigate('Sidebar', {
-        screen: 'Orders',
-        params: {
-          screen: 'Orders',
-        },
-      });
-    }
-    if (route.name === 'Reports') {
-      navigation.navigate('Sidebar', {
-        screen: 'Reports',
-        params: {
-          screen: 'Reports',
-        },
       });
     } else {
       navigation.navigate(route.name);
