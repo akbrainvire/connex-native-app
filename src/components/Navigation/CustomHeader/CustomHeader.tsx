@@ -21,7 +21,7 @@ const CustomHeader = (props: any) => {
         <IconMaterialIcons name="notifications" size={20} color="#fff" />
         {/* <IconFontAwesome5 name="user-circle" size={20} color="#fff" /> */}
         <Image
-          source={require('../../../assets/images/profile4.webp')}
+          source={require('../../../../assets/images/profile4.webp')}
           style={{height: 20, width: 20, borderRadius: 20}}
         />
       </View>

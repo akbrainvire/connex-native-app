@@ -6,10 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginStyle from './LoginStyle';
 import LandingStyle from '../Landing/LandingStyle';
-//import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import CheckBox from 'react-native-check-box';
 import {useDispatch} from 'react-redux';
 import {authorize} from '../../redux/slice/AuthenticSlice';
@@ -20,21 +20,40 @@ const Login = ({navigation}: any) => {
   const [errorMsg, setErrorMsg] = useState({email: '', password: ''});
   const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
-    if (state.email !== 'dip@test.com' && state.password !== 'test1234') {
-      setErrorMsg({
-        email: 'Please enter valid email',
-        password: 'Please enter valid password',
-      });
-    } else if (state.email !== 'dip@test.com' && state.password == 'test1234') {
-      setErrorMsg({email: 'Please enter valid email', password: ''});
-    } else if (state.email == 'dip@test.com' && state.password !== 'test1234') {
-      setErrorMsg({email: '', password: 'Please enter valid password'});
+  const validateEmail = (email: string) => {
+    let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+  const handleError = () => {
+    if (!state.email || !validateEmail(state.email)) {
+      setErrorMsg(prev => ({
+        ...prev,
+        email: !state.email
+          ? 'Email required'
+          : 'Please enter a valid email address',
+      }));
+    } else if (!state.password) {
+      setErrorMsg(prev => ({
+        ...prev,
+        email: '',
+        password: 'Password required',
+      }));
     } else {
       setErrorMsg({email: '', password: ''});
+    }
+  };
+
+  const handleLogin = () => {
+    handleError();
+    if (
+      errorMsg.email == '' &&
+      errorMsg.password == '' &&
+      state.email !== '' &&
+      state.password !== ''
+    ) {
       dispatch(authorize(state));
-      // navigation.navigate('DrawerNav');
     }
   };
   console.log(errorMsg, 'errorMsg');
@@ -66,10 +85,13 @@ const Login = ({navigation}: any) => {
             style={LoginStyle.input}
             placeholder="Enter Your Username/Email Address"
             value={state?.email}
-            onChangeText={e => setState({password: state.password, email: e})}
+            onChangeText={e => {
+              setState({password: state.password, email: e});
+            }}
+            onBlur={handleError}
           />
           {errorMsg?.email != '' && (
-            <Text style={LoginStyle.errorMsg}>Please enter valid email</Text>
+            <Text style={LoginStyle.errorMsg}>{errorMsg.email}</Text>
           )}
         </View>
         <View style={LoginStyle.inputContainer}>
@@ -79,11 +101,20 @@ const Login = ({navigation}: any) => {
             placeholder="Enter Your Password"
             value={state?.password}
             onChangeText={e => setState({email: state.email, password: e})}
+            secureTextEntry={!showPassword}
+            onBlur={handleError}
           />
-          {errorMsg?.password != '' && (
-            <Text style={LoginStyle.errorMsg}>Please enter valid password</Text>
-          )}
+          <Icon
+            name={showPassword ? 'eye' : 'eye-off'}
+            style={LoginStyle.passwordIcon}
+            size={20}
+            color={'black'}
+            onPress={() => setShowPassword(prev => !prev)}
+          />
         </View>
+        {errorMsg?.password != '' && (
+          <Text style={LoginStyle.errorMsg}>{errorMsg.password}</Text>
+        )}
         <View style={LoginStyle.checkboxDiv}>
           <View style={{width: '50%'}}>
             <CheckBox

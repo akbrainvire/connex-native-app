@@ -6,7 +6,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import {useSelector} from 'react-redux';
-import Sidebar from '../Sidebar/Sidebar';
+import Sidebar from './Sidebar/Sidebar';
 import BottomTab from '../BottomTab/BottomTab';
 import Products from '../../screens/Products/Products';
 import Inventory from '../../screens/Inventory/Inventory';
@@ -21,7 +21,7 @@ import Landing from '../../screens/Landing/Landing';
 import Login from '../../screens/Login/Login';
 import SignUp from '../../screens/SignUp/SignUp';
 import ResetPassword from '../../screens/ResetPassword/ResetPassword';
-import CustomHeader from '../CustomHeader/CustomHeader';
+import CustomHeader from './CustomHeader/CustomHeader';
 
 const RootNavigation = () => {
   const isAuthenticated = useSelector(

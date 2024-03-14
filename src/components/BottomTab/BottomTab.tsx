@@ -6,7 +6,7 @@ import Inventory from '../../screens/Inventory/Inventory';
 import Orders from '../../screens/Orders/Orders';
 import Reports from '../../screens/Reports/Reports';
 import {CustomTabBar} from './CustomBottomTab';
-import CustomHeader from '../CustomHeader/CustomHeader';
+import CustomHeader from '../Navigation/CustomHeader/CustomHeader';
 const Tab = createBottomTabNavigator();
 
 const BottomTab = ({navigation, route, activeScreen}: any) => {

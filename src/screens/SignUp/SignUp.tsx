@@ -5,13 +5,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import SignUpStyle from './SignUpStyle';
 import LandingStyle from '../Landing/LandingStyle';
 import * as yup from 'yup';
 import {Formik} from 'formik';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const SignUp = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmShowPassword, setConfirmShowPassword] = useState(false);
+
   return (
     <Formik
       initialValues={{
@@ -105,12 +109,19 @@ const SignUp = () => {
                 value={values.password}
                 onChangeText={handleChange('password')}
                 onBlur={() => setFieldTouched('password')}
-                secureTextEntry={true}
+                secureTextEntry={!showPassword}
               />
-              {touched.password && errors.password && (
-                <Text style={SignUpStyle.errorMsg}>{errors.password}</Text>
-              )}
+              <Icon
+                name={showPassword ? 'eye' : 'eye-off'}
+                style={SignUpStyle.passwordIcon}
+                size={20}
+                color={'black'}
+                onPress={() => setShowPassword(prev => !prev)}
+              />
             </View>
+            {touched.password && errors.password && (
+              <Text style={SignUpStyle.errorMsg}>{errors.password}</Text>
+            )}
             <View style={SignUpStyle.inputContainer}>
               <Text style={SignUpStyle.label}>Confirm Password*</Text>
               <TextInput
@@ -119,14 +130,19 @@ const SignUp = () => {
                 value={values.confirmPassword}
                 onChangeText={handleChange('confirmPassword')}
                 onBlur={() => setFieldTouched('confirmPassword')}
-                secureTextEntry={true}
+                secureTextEntry={!confirmShowPassword}
               />
-              {touched.confirmPassword && errors.confirmPassword && (
-                <Text style={SignUpStyle.errorMsg}>
-                  {errors.confirmPassword}
-                </Text>
-              )}
+              <Icon
+                name={confirmShowPassword ? 'eye' : 'eye-off'}
+                style={SignUpStyle.passwordIcon}
+                size={20}
+                color={'black'}
+                onPress={() => setConfirmShowPassword(prev => !prev)}
+              />
             </View>
+            {touched.confirmPassword && errors.confirmPassword && (
+              <Text style={SignUpStyle.errorMsg}>{errors.confirmPassword}</Text>
+            )}
           </View>
           <View style={SignUpStyle.bottomSection}>
             <TouchableOpacity

@@ -4,10 +4,10 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 import FontAwesome5Icons from 'react-native-vector-icons/FontAwesome5';
 import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
-import LandingStyle from '../../screens/Landing/LandingStyle';
+import LandingStyle from '../../../screens/Landing/LandingStyle';
 import SidebarStyle from './SidebarStyle';
 import {useDispatch} from 'react-redux';
-import {logout} from '../../redux/slice/AuthenticSlice';
+import {logout} from '../../../redux/slice/AuthenticSlice';
 
 const Sidebar = ({state, navigation, ...props}: any) => {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const Sidebar = ({state, navigation, ...props}: any) => {
       }}>
       <View style={{...LandingStyle.logo, marginLeft: -25, marginTop: 10}}>
         <Image
-          source={require('../../../assets/images/profile4.webp')}
+          source={require('../../../../assets/images/profile4.webp')}
           style={{width: 55, height: 55, borderRadius: 55}}
         />
         <View>
@@ -113,6 +113,14 @@ const Sidebar = ({state, navigation, ...props}: any) => {
               } else if (route.name == 'Settings') {
                 return (
                   <IconAntDesign name="setting" size={20} color="#020024" />
+                );
+              } else if (route.name == 'Profile') {
+                return (
+                  <FontAwesome5Icons
+                    name="user-alt"
+                    size={20}
+                    color="#020024"
+                  />
                 );
               }
             }}
