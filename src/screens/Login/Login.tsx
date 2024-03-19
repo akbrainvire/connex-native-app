@@ -12,7 +12,7 @@ import LandingStyle from '../Landing/LandingStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CheckBox from 'react-native-check-box';
 import {useDispatch} from 'react-redux';
-import {authorize} from '../../redux/slice/AuthenticSlice';
+import {authorize, loginUser} from '../../redux/slice/AuthenticSlice';
 // import { Icon } from 'react-native-elements';
 
 const Login = ({navigation}: any) => {
@@ -53,7 +53,7 @@ const Login = ({navigation}: any) => {
       state.email !== '' &&
       state.password !== ''
     ) {
-      dispatch(authorize(state));
+      dispatch(loginUser({username: state.email, password: state.password}));
     }
   };
   console.log(errorMsg, 'errorMsg');

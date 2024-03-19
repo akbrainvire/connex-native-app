@@ -28,6 +28,10 @@ const RootNavigation = () => {
     (state: any) => state.authenticate.isAuthorized,
   );
 
+  console.log(
+    useSelector((state: any) => state.authenticate),
+    'userSelector authenticate',
+  );
   const Stack = createNativeStackNavigator();
   const Drawer = createDrawerNavigator();
 
@@ -37,7 +41,8 @@ const RootNavigation = () => {
         screenOptions={{
           header: props => <CustomHeader {...props} />,
         }}
-        drawerContent={props => <Sidebar {...props} />}>
+        drawerContent={props => <Sidebar {...props} />}
+        initialRouteName="Dashboard">
         <Drawer.Screen
           name="Dashboard"
           component={BottomTab}

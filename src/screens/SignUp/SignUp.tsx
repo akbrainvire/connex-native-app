@@ -11,11 +11,17 @@ import LandingStyle from '../Landing/LandingStyle';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useDispatch} from 'react-redux';
+import {signupUser} from '../../redux/slice/AuthenticSlice';
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmShowPassword, setConfirmShowPassword] = useState(false);
+  const dispatch = useDispatch();
 
+  const handleSignUp = (values: any) => {
+    dispatch(signupUser(values));
+  };
   return (
     <Formik
       initialValues={{
@@ -25,7 +31,7 @@ const SignUp = () => {
         password: '',
         confirmPassword: '',
       }}
-      onSubmit={values => console.log(values, 'VALUES')}
+      onSubmit={values => handleSignUp(values)}
       validationSchema={yup.object().shape({
         firstName: yup
           .string()
