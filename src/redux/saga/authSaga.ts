@@ -4,10 +4,13 @@ import {
   loginUser,
   loginUserError,
   loginUserSuccess,
-  signupUser,
-  signupUserError,
-  signupUserSuccess,
+  setLoading,
+  // signupUser,
+  // signupUserError,
+  // signupUserSuccess,
+  unsetLoading,
 } from '../slice/AuthenticSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface loginI {
   data: {
@@ -33,6 +36,7 @@ interface loginI {
 
 export function* loginUserSaga(action: any) {
   try {
+    yield put(setLoading());
     const {username, password} = action.payload;
     const response: loginI = yield call(
       axios.post,
@@ -43,15 +47,19 @@ export function* loginUserSaga(action: any) {
         deviceId: '',
       },
     );
-    console.log(response, 'response - user login');
     if (response.status === 200) {
       yield put(loginUserSuccess(response.data));
+      AsyncStorage.setItem('userLoggedBefore', JSON.stringify(true)).catch(
+        error => console.error('Error storing options:', error),
+      );
     } else {
       yield put(loginUserError('Invalid username or password'));
     }
   } catch (error: any) {
     console.log(error, 'error login user');
     yield put(loginUserError(error.message));
+  } finally {
+    yield put(unsetLoading());
   }
 }
 
@@ -59,23 +67,27 @@ export function* watchLoginUser() {
   yield takeLatest(loginUser, loginUserSaga);
 }
 
-function* signupUserSaga(action: any) {
-  try {
-    const response = yield call(
-      axios.post,
-      'https://connexreporting-api-staging.azurewebsites.net/api/Account/Register',
-      action.payload,
-    );
-    if (response.status === 200) {
-      yield put(signupUserSuccess(response.data));
-    } else {
-      yield put(signupUserError('Invalid username or password'));
-    }
-  } catch (error: any) {
-    yield put(signupUserError(error.message));
-  }
-}
+// function* signupUserSaga(action: any) {
+//   try {
+//     yield put(setLoading());
 
-export function* watchRegisterUser() {
-  yield takeLatest(signupUser, signupUserSaga);
-}
+//     const response = yield call(
+//       axios.post,
+//       'https://connexreporting-api-staging.azurewebsites.net/api/Account/Register',
+//       action.payload,
+//     );
+//     if (response.status === 200) {
+//       yield put(signupUserSuccess(response.data));
+//     } else {
+//       yield put(signupUserError('Invalid username or password'));
+//     }
+//   } catch (error: any) {
+//     yield put(signupUserError(error.message));
+//   } finally {
+//     yield put(unsetLoading());
+//   }
+// }
+
+// export function* watchRegisterUser() {
+//   yield takeLatest(signupUser, signupUserSaga);
+// }

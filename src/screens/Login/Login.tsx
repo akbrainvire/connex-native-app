@@ -11,12 +11,19 @@ import LoginStyle from './LoginStyle';
 import LandingStyle from '../Landing/LandingStyle';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CheckBox from 'react-native-check-box';
-import {useDispatch} from 'react-redux';
-import {authorize, loginUser} from '../../redux/slice/AuthenticSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {loginUser, removeError} from '../../redux/slice/AuthenticSlice';
+import CustomActivityIndicator from '../../components/generic/CustomActivityIndicator';
 // import { Icon } from 'react-native-elements';
 
 const Login = ({navigation}: any) => {
-  const [state, setState] = useState({email: '', password: ''});
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const authenticate = useSelector((state: any) => state.authenticate);
+  console.log(authenticate, 'authenticateauthenticate');
+  let apiError = authenticate.error;
+
   const [errorMsg, setErrorMsg] = useState({email: '', password: ''});
   const [rememberMe, setRememberMe] = useState(false);
   const dispatch = useDispatch();
@@ -27,14 +34,12 @@ const Login = ({navigation}: any) => {
     return regex.test(email);
   };
   const handleError = () => {
-    if (!state.email || !validateEmail(state.email)) {
+    if (!email || !validateEmail(email)) {
       setErrorMsg(prev => ({
         ...prev,
-        email: !state.email
-          ? 'Email required'
-          : 'Please enter a valid email address',
+        email: !email ? 'Email required' : 'Please enter a valid email address',
       }));
-    } else if (!state.password) {
+    } else if (!password) {
       setErrorMsg(prev => ({
         ...prev,
         email: '',
@@ -50,23 +55,35 @@ const Login = ({navigation}: any) => {
     if (
       errorMsg.email == '' &&
       errorMsg.password == '' &&
-      state.email !== '' &&
-      state.password !== ''
+      email !== '' &&
+      password !== ''
     ) {
-      dispatch(loginUser({username: state.email, password: state.password}));
+      dispatch(loginUser({username: email, password: password}));
     }
   };
-  console.log(errorMsg, 'errorMsg');
+
+  useEffect(() => {
+    if (apiError !== '') {
+      setTimeout(() => {
+        dispatch(removeError());
+      }, 5000);
+    }
+  }, [apiError]);
+  console.log(apiError, 'emailpassword');
   return (
     <View style={LoginStyle.loginMain}>
       <View style={LoginStyle.topSection}>
-        {/* <View style={LandingStyle.logo}>
-                    <Image source={require('../../../assets/images/logo.png')} />
-                    <View>
-                        <Text style={{...LandingStyle.logoTextTop, ...{color: '#000'}}}>Connex</Text>
-                        <Text style={{...LandingStyle.logoTextBottom, ...{color: '#000'}}}>Inventory Planner</Text>
-                    </View>
-                </View> */}
+        <View style={LandingStyle.logo}>
+          <Image source={require('../../../assets/images/logo.png')} />
+          <View>
+            <Text style={{...LandingStyle.logoTextTop, ...{color: '#000'}}}>
+              Connex
+            </Text>
+            <Text style={{...LandingStyle.logoTextBottom, ...{color: '#000'}}}>
+              Inventory Planner
+            </Text>
+          </View>
+        </View>
         <Text style={LoginStyle.topTitle}>Welcome!</Text>
         <Text style={LoginStyle.topDesc}>
           Please enter your details to login
@@ -78,15 +95,21 @@ const Login = ({navigation}: any) => {
                     </TouchableOpacity>
                 </View> */}
       </View>
+
       <View style={LoginStyle.middleSection}>
+        {apiError !== '' && (
+          <View style={LoginStyle.generalErrorDiv}>
+            <Text style={LoginStyle.generalError}>{apiError}</Text>
+          </View>
+        )}
         <View style={LoginStyle.inputContainer}>
           <Text style={LoginStyle.label}>Username/Email Address</Text>
           <TextInput
             style={LoginStyle.input}
             placeholder="Enter Your Username/Email Address"
-            value={state?.email}
+            value={email}
             onChangeText={e => {
-              setState({password: state.password, email: e});
+              setEmail(e);
             }}
             onBlur={handleError}
           />
@@ -99,8 +122,8 @@ const Login = ({navigation}: any) => {
           <TextInput
             style={LoginStyle.input}
             placeholder="Enter Your Password"
-            value={state?.password}
-            onChangeText={e => setState({email: state.email, password: e})}
+            value={password}
+            onChangeText={e => setPassword(e)}
             secureTextEntry={!showPassword}
             onBlur={handleError}
           />
@@ -145,10 +168,14 @@ const Login = ({navigation}: any) => {
         </View>
       </View>
       <View style={LoginStyle.bottomSection}>
-        <TouchableOpacity
-          style={{...LandingStyle.btn, backgroundColor: '#020024'}}
-          onPress={() => handleLogin()}>
-          <Text style={LandingStyle.btnText}>Log in</Text>
+        <TouchableOpacity onPress={() => handleLogin()}>
+          <View style={LoginStyle.btn}>
+            {authenticate.loading ? (
+              <CustomActivityIndicator color="#fdfdfd" />
+            ) : (
+              <Text style={LandingStyle.btnText}>Log in</Text>
+            )}
+          </View>
         </TouchableOpacity>
         <Text style={LoginStyle.DontHaveAcc}>
           <Text>Don't have an account yet?</Text>

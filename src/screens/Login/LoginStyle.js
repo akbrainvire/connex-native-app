@@ -82,4 +82,24 @@ export default StyleSheet.create({
 
     bottom: 15,
   },
+  generalError: {
+    fontSize: 12,
+    color: 'red',
+  },
+  generalErrorDiv: {
+    backgroundColor: '#fad9db',
+    // flex: 1,
+    justifyContent: 'center',
+    padding: 15,
+  },
+  btn: {
+    borderRadius: 20,
+    //backgroundColor: '#44187A',
+    backgroundColor: '#000',
+    height: 50,
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

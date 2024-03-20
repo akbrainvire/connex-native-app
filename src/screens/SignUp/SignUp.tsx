@@ -1,169 +1,97 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Linking} from 'react-native';
+import React from 'react';
 import SignUpStyle from './SignUpStyle';
-import LandingStyle from '../Landing/LandingStyle';
-import * as yup from 'yup';
-import {Formik} from 'formik';
-import Icon from 'react-native-vector-icons/Ionicons';
-import {useDispatch} from 'react-redux';
-import {signupUser} from '../../redux/slice/AuthenticSlice';
+import {Image} from 'react-native';
+import Icon from 'react-native-vector-icons/Entypo';
 
-const SignUp = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [confirmShowPassword, setConfirmShowPassword] = useState(false);
-  const dispatch = useDispatch();
-
-  const handleSignUp = (values: any) => {
-    dispatch(signupUser(values));
-  };
+const Block = ({
+  number,
+  title,
+  description,
+}: {
+  number: number;
+  title: string;
+  description: string;
+}) => {
   return (
-    <Formik
-      initialValues={{
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      }}
-      onSubmit={values => handleSignUp(values)}
-      validationSchema={yup.object().shape({
-        firstName: yup
-          .string()
-          .required('First Name is Required.')
-          .min(1, 'First Name is Too Short.'),
-        lastName: yup
-          .string()
-          .required('Last Name is Required.')
-          .min(1, 'Last Name is Too Short.'),
-        email: yup.string().email().required('Email is Required.'),
-        password: yup
-          .string()
-          .required('No password provided.')
-          .min(8, 'Password is too short - should be 8 chars minimum.')
-          .matches(/(?=.*[0-9])/, 'Password must contain a number.'),
-        confirmPassword: yup
-          .string()
-          .oneOf([yup.ref('password')], 'Passwords must match'),
-      })}>
-      {({
-        values,
-        handleChange,
-        errors,
-        setFieldTouched,
-        touched,
-        isValid,
-        handleSubmit,
-      }) => (
-        <View style={SignUpStyle.signupMain}>
-          <View style={SignUpStyle.topSection}>
-            <Text style={SignUpStyle.topTitle}>Connex Inventory Planning</Text>
-            <Text style={SignUpStyle.topDesc}>
-              Please create a login for Connex Reporting
-            </Text>
+    <View style={SignUpStyle.container}>
+      <TouchableOpacity
+        onPress={() =>
+          number == 1 &&
+          Linking.openURL('https://connexecommerce.com/contact-sales')
+        }>
+        <View style={SignUpStyle.blockContainer}>
+          <View>
+            <Text style={SignUpStyle.numberText}>{number}</Text>
           </View>
-          <View style={SignUpStyle.middleSection}>
-            <View style={SignUpStyle.inputContainer}>
-              <Text style={SignUpStyle.label}>First name*</Text>
-              <TextInput
-                style={SignUpStyle.input}
-                placeholder="First name"
-                value={values.firstName}
-                onChangeText={handleChange('firstName')}
-                onBlur={() => setFieldTouched('firstName')}
-              />
-              {touched.firstName && errors.firstName && (
-                <Text style={SignUpStyle.errorMsg}>{errors.firstName}</Text>
-              )}
-            </View>
-            <View style={SignUpStyle.inputContainer}>
-              <Text style={SignUpStyle.label}>Last name*</Text>
-              <TextInput
-                style={SignUpStyle.input}
-                placeholder="Last name"
-                value={values.lastName}
-                onChangeText={handleChange('lastName')}
-                onBlur={() => setFieldTouched('lastName')}
-              />
-              {touched.lastName && errors.lastName && (
-                <Text style={SignUpStyle.errorMsg}>{errors.lastName}</Text>
-              )}
-            </View>
-            <View style={SignUpStyle.inputContainer}>
-              <Text style={SignUpStyle.label}>Email address*</Text>
-              <TextInput
-                style={SignUpStyle.input}
-                placeholder="Email address"
-                value={values.email}
-                onChangeText={handleChange('email')}
-                onBlur={() => setFieldTouched('email')}
-              />
-              {touched.email && errors.email && (
-                <Text style={SignUpStyle.errorMsg}>{errors.email}</Text>
-              )}
-            </View>
-            <View style={SignUpStyle.inputContainer}>
-              <Text style={SignUpStyle.label}>Password*</Text>
-              <TextInput
-                style={SignUpStyle.input}
-                placeholder="Password"
-                value={values.password}
-                onChangeText={handleChange('password')}
-                onBlur={() => setFieldTouched('password')}
-                secureTextEntry={!showPassword}
-              />
-              <Icon
-                name={showPassword ? 'eye' : 'eye-off'}
-                style={SignUpStyle.passwordIcon}
-                size={20}
-                color={'black'}
-                onPress={() => setShowPassword(prev => !prev)}
-              />
-            </View>
-            {touched.password && errors.password && (
-              <Text style={SignUpStyle.errorMsg}>{errors.password}</Text>
-            )}
-            <View style={SignUpStyle.inputContainer}>
-              <Text style={SignUpStyle.label}>Confirm Password*</Text>
-              <TextInput
-                style={SignUpStyle.input}
-                placeholder="Confirm Password"
-                value={values.confirmPassword}
-                onChangeText={handleChange('confirmPassword')}
-                onBlur={() => setFieldTouched('confirmPassword')}
-                secureTextEntry={!confirmShowPassword}
-              />
-              <Icon
-                name={confirmShowPassword ? 'eye' : 'eye-off'}
-                style={SignUpStyle.passwordIcon}
-                size={20}
-                color={'black'}
-                onPress={() => setConfirmShowPassword(prev => !prev)}
-              />
-            </View>
-            {touched.confirmPassword && errors.confirmPassword && (
-              <Text style={SignUpStyle.errorMsg}>{errors.confirmPassword}</Text>
-            )}
-          </View>
-          <View style={SignUpStyle.bottomSection}>
-            <TouchableOpacity
-              style={{...LandingStyle.btn, backgroundColor: '#020024'}}
-              onPress={() => handleSubmit()}>
-              <Text style={LandingStyle.btnText}>Sign up</Text>
-            </TouchableOpacity>
-            <Text style={SignUpStyle.privacyPolicy}>
-              This site is protected by reCAPTCHA and the Google Privacy Policy
-              and Terms of Service apply.
-            </Text>
+          <View style={{flex: 1}}>
+            <Text style={SignUpStyle.titleText}>{title}</Text>
+            <Text style={SignUpStyle.descText}>{description}</Text>
           </View>
         </View>
-      )}
-    </Formik>
+      </TouchableOpacity>
+
+      {number < 4 && <IconStyled></IconStyled>}
+    </View>
+  );
+};
+const IconStyled = () => {
+  return (
+    <View
+      style={{
+        position: 'absolute',
+        bottom: -40,
+        alignSelf: 'center',
+      }}>
+      <Icon name="arrow-down" size={40} color={'black'} />
+    </View>
+  );
+};
+
+const SignUp = () => {
+  return (
+    <View style={[SignUpStyle.mainContainer, {backgroundColor: 'white'}]}>
+      <View style={SignUpStyle.logo}>
+        <Image source={require('../../../assets/images/logo.png')} />
+        <View>
+          <Text style={{...SignUpStyle.logoTextTop, ...{color: '#000'}}}>
+            Connex
+          </Text>
+          <Text style={{...SignUpStyle.logoTextBottom, ...{color: '#000'}}}>
+            Inventory Planner
+          </Text>
+        </View>
+      </View>
+      <Text style={{...SignUpStyle.register, ...{color: '#000'}}}>
+        Register
+      </Text>
+
+      <View style={SignUpStyle.allBlocks}>
+        <Block
+          number={1}
+          title="Contact Sales"
+          description="Register your requirement with contact sales"
+        />
+
+        <Block
+          number={2}
+          title="Check Email"
+          description="Check email with registration link shared, It may take some time"
+        />
+
+        <Block
+          number={3}
+          title="Register with Connex "
+          description="Register with link shared by the sales person"
+        />
+
+        <Block
+          number={4}
+          title="Purchase plan"
+          description="Choose plan as per your requirement"
+        />
+      </View>
+    </View>
   );
 };
 

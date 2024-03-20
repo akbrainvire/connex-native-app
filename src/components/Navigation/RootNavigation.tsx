@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DrawerActions, NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -22,16 +22,35 @@ import Login from '../../screens/Login/Login';
 import SignUp from '../../screens/SignUp/SignUp';
 import ResetPassword from '../../screens/ResetPassword/ResetPassword';
 import CustomHeader from './CustomHeader/CustomHeader';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomActivityIndicator from '../generic/CustomActivityIndicator';
 
 const RootNavigation = () => {
   const isAuthenticated = useSelector(
     (state: any) => state.authenticate.isAuthorized,
   );
 
-  console.log(
-    useSelector((state: any) => state.authenticate),
-    'userSelector authenticate',
-  );
+  const [userLoggedBefore, setUserLoggedBefore] = useState<
+    null | boolean | string
+  >(false);
+  const [loading, setLoading] = useState(false);
+  // console.log(
+  //   useSelector((state: any) => state.authenticate),
+  //   'userSelector authenticate',
+  // );
+
+  const checkIfuserLoggedBefore = async () => {
+    setLoading(true);
+    const userLoggedBefore = await AsyncStorage.getItem('userLoggedBefore');
+    console.log(userLoggedBefore, 'userloggedbefore');
+    setUserLoggedBefore(userLoggedBefore); // change here to userloggedbefore for that one time landing page functionality or false to not want that
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    checkIfuserLoggedBefore();
+  }, [isAuthenticated]);
+
   const Stack = createNativeStackNavigator();
   const Drawer = createDrawerNavigator();
 
@@ -52,21 +71,21 @@ const RootNavigation = () => {
         />
         {/* <Drawer.Screen name="Products" component={Products} />
         <Drawer.Screen name="Inventory" component={Inventory} /> */}
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="Customers"
           component={Customers}
           options={{
             headerShown: true,
           }}
-        />
+        /> */}
         {/* <Drawer.Screen name="Orders" component={Orders} /> */}
-        <Drawer.Screen
+        {/* <Drawer.Screen
           name="Goals"
           component={Goals}
           options={{
             headerShown: true,
           }}
-        />
+        /> */}
         <Drawer.Screen
           name="Amazon"
           component={Amazon}
@@ -109,11 +128,9 @@ const RootNavigation = () => {
   };
 
   const LandingStack = () => {
-    console.log('first landing');
-
     return (
       <Stack.Navigator
-        initialRouteName="Landing"
+        initialRouteName={userLoggedBefore ? 'Login' : 'Landing'}
         screenOptions={{headerShown: false}}>
         <Stack.Screen
           name="Landing"
@@ -128,7 +145,7 @@ const RootNavigation = () => {
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{headerShown: false}}
+          options={{headerShown: true, headerTitle: ''}}
         />
         <Stack.Screen
           name="ResetPassword"
@@ -141,7 +158,13 @@ const RootNavigation = () => {
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? <AfterLoginStack /> : <LandingStack />}
+      {loading ? (
+        <CustomActivityIndicator color="#000" />
+      ) : isAuthenticated ? (
+        <AfterLoginStack />
+      ) : (
+        <LandingStack />
+      )}
     </NavigationContainer>
   );
 };

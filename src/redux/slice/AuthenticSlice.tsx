@@ -5,23 +5,20 @@ const initialState = {
   userDetails: {
     email: '',
     password: '',
-    token: '',
+    accessToken: '',
   },
   error: '',
+  loading: false,
 };
 const Authenticate = createSlice({
   name: 'authenticate',
   initialState: initialState,
   reducers: {
     logout: (state: any) => {
-      state.isAuthorized = false;
-      state.userDetails = {
-        email: '',
-        password: '',
-      };
+      return initialState;
     },
     loginUser: (state: any, action) => {},
-    signupUser: (state: any, action) => {},
+    // signupUser: (state: any, action) => {},
 
     loginUserSuccess: (state, action) => {
       console.log('enter in the loginusersuccess');
@@ -33,17 +30,25 @@ const Authenticate = createSlice({
       state.error = action.payload;
     },
 
-    signupUserSuccess: (state, action) => {
-      console.log('enter in the loginusersuccess');
-      state.isAuthorized = true;
-      state.userDetails = action.payload;
+    // signupUserSuccess: (state, action) => {
+    //   console.log('enter in the loginusersuccess');
+    //   state.isAuthorized = true;
+    //   state.userDetails = action.payload;
+    //   state.error = '';
+    // },
+    // signupUserError: (state, action) => {
+    //   state.error = action.payload;
+    // },
+
+    setLoading: state => {
+      console.log(state, 'hellostate');
+      state.loading = true;
+    },
+    unsetLoading: state => {
+      state.loading = false;
+    },
+    removeError: state => {
       state.error = '';
-    },
-    signupUserError: (state, action) => {
-      state.error = action.payload;
-    },
-    resetTemporaryState: state => {
-      return initialState;
     },
   },
 });
@@ -52,10 +57,12 @@ export const {
   logout,
   loginUserError,
   loginUserSuccess,
-  resetTemporaryState,
   loginUser,
-  signupUser,
-  signupUserError,
-  signupUserSuccess,
+  // signupUser,
+  // signupUserError,
+  // signupUserSuccess,
+  setLoading,
+  unsetLoading,
+  removeError,
 } = Authenticate.actions;
 export default Authenticate.reducer;

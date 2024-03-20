@@ -1,8 +1,8 @@
 // authSaga.js
 
-import {all} from 'redux-saga/effects';
-import {watchLoginUser, watchRegisterUser} from './authSaga';
+import {all, fork} from 'redux-saga/effects';
+import {watchLoginUser} from './authSaga';
 
 export default function* rootSaga() {
-  yield all([watchLoginUser(), watchRegisterUser()]);
+  yield all([fork(watchLoginUser)]);
 }

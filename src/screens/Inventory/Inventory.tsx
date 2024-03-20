@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text} from 'react-native';
+import React from 'react';
+import CommonStyle from '../CommonStyle';
 
 const Inventory = () => {
   return (
-    <View>
-      <Text>Inventory</Text>
+    <View style={CommonStyle.textDiv}>
+      <Text style={CommonStyle.text}>Comming soon ...</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Inventory
+export default Inventory;

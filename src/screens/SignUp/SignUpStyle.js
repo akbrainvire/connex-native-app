@@ -1,68 +1,65 @@
 import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
-  signupMain: {
-    padding: 30,
-    display: 'flex',
+  mainContainer: {
     flex: 1,
+    flexDirection: 'column',
     justifyContent: 'center',
-    //backgroundColor: '#020024',
-    backgroundColor: '#fff',
+    // alignItems: 'center',
   },
-  topSection: {
-    marginBottom: 20,
+  container: {
+    // flex: 1,
+    // marginVertical: 10,
+    marginHorizontal: 20,
+    marginVertical: 20,
   },
-  topTitle: {
-    //color: '#fff',
-    color: '#020024',
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-    fontSize: 26,
-  },
-  topDesc: {
-    //color: '#fff',
-    color: '#020024',
-    textAlign: 'center',
-  },
-  middleSection: {},
-  inputContainer: {
-    marginTop: 20,
-  },
-  label: {
-    fontWeight: 'bold',
-    //color: '#fff',
-    color: '#020024',
-    marginBottom: 10,
-  },
-  input: {
-    paddingLeft: 15,
-    borderColor: '#ddd',
+  blockContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    width: '100%',
+    backgroundColor: '#d4d4d4',
     borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: '#f5f5f5',
-    height: 50,
+    borderColor: 'black',
   },
-  bottomSection: {
-    marginTop: 40,
+  numberText: {
+    fontSize: 35,
+    fontWeight: 'bold',
+    color: 'black',
   },
-  privacyPolicy: {
-    marginTop: 30,
+  titleText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  descText: {
+    fontSize: 14,
+    color: 'black',
+  },
+  logo: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 15,
+    flexDirection: 'row',
+    marginBottom: 40,
+  },
+  logoTextTop: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
+  register: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 26,
     textAlign: 'center',
-    opacity: 0.7,
-    lineHeight: 20,
-    //color: '#fff'
-    color: '#020024',
   },
-  errorMsg: {
-    fontSize: 12,
-    color: 'red',
-    marginTop: 5,
+  logoTextBottom: {
+    color: '#fff',
   },
-  passwordIcon: {
-    position: 'absolute',
-    right: 10,
-
-    bottom: 15,
+  allBlocks: {
+    marginTop: 20,
   },
 });

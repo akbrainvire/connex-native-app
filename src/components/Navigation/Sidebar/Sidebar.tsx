@@ -6,7 +6,7 @@ import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
 import LandingStyle from '../../../screens/Landing/LandingStyle';
 import SidebarStyle from './SidebarStyle';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../../../redux/slice/AuthenticSlice';
 
 const Sidebar = ({state, navigation, ...props}: any) => {
@@ -14,6 +14,11 @@ const Sidebar = ({state, navigation, ...props}: any) => {
   const handleLogOut = () => {
     dispatch(logout());
   };
+
+  const userDetails = useSelector(
+    (state: any) => state.authenticate.userDetails,
+  );
+  // console.log(userDetails);
 
   const handlePress = (route: any) => {
     if (route.name === 'Dashboard') {
@@ -30,25 +35,30 @@ const Sidebar = ({state, navigation, ...props}: any) => {
       style={{
         backgroundColor: '#020024',
         paddingVertical: 20,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
       }}>
-      <View style={{...LandingStyle.logo, marginLeft: -25, marginTop: 10}}>
+      <View
+        style={{
+          ...LandingStyle.logo,
+          paddingHorizontal: 20,
+          marginTop: 10,
+          // width: '100%',
+        }}>
         <Image
           source={require('../../../../assets/images/profile4.webp')}
           style={{width: 55, height: 55, borderRadius: 55}}
         />
-        <View>
+        <View style={{width: '80%'}}>
           <Text
             style={{
               ...LandingStyle.logoTextTop,
-              fontSize: 24,
+              fontSize: 20,
               marginBottom: 3,
-            }}>
-            Test User{' '}
+            }}
+            numberOfLines={1}>
+            {userDetails.firstName + ' ' + userDetails.lastName}
           </Text>
           <Text style={{...LandingStyle.logoTextBottom, fontSize: 12}}>
-            test@brainvire.com
+            {userDetails.user}
           </Text>
         </View>
       </View>

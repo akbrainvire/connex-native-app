@@ -1,12 +1,18 @@
 import {View, Text, ActivityIndicator} from 'react-native';
 import React from 'react';
 
-const CustomActivityIndicator = ({animating}: {animating?: boolean}) => {
+const CustomActivityIndicator = ({
+  animating,
+  color,
+}: {
+  animating?: boolean;
+  color?: string;
+}) => {
   return (
     <ActivityIndicator
       animating={animating}
       size="large"
-      color={'#242424'}
+      color={color ? color : '#15ff00'}
       style={{marginTop: 'auto', marginBottom: 'auto'}}
     />
   );

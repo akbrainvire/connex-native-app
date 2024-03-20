@@ -1,12 +1,13 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import {View, Text} from 'react-native';
+import React from 'react';
+import CommonStyle from '../CommonStyle';
 
 const Amazon = () => {
   return (
-    <View>
-      <Text>Amazon</Text>
+    <View style={CommonStyle.textDiv}>
+      <Text style={CommonStyle.text}>Comming soon ...</Text>
     </View>
-  )
-}
+  );
+};
 
-export default Amazon
+export default Amazon;
